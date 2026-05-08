@@ -1,0 +1,77 @@
+name: 'CI'
+
+'on':
+  push:
+    branches:
+      - 'main'
+  pull_request:
+
+jobs:
+  base-qa:
+    runs-on: 'self-hosted'
+    steps:
+      - uses: 'actions/checkout@v6'
+
+      - uses: 'actions/local/qa-forgejo-folder@v1'
+
+      - uses: 'actions/local/setup-php@v1'
+        with:
+          php-version: '8.2'
+
+      - name: 'Validate composer.json'
+        run: 'composer validate'
+
+      - name: 'Install PHP dependencies'
+        run: 'composer update --prefer-dist --no-progress'
+
+      - name: 'Coding Guideline'
+        run: 'composer project:cgl'
+
+      - name: 'Lint PHPUnit configuration file'
+        uses: 'actions/local/qa-xmllint@v1'
+        with:
+          schema: 'vendor/phpunit/phpunit/phpunit.xsd'
+          file: 'phpunit.xml.dist'
+
+  advances-qa:
+    runs-on: 'self-hosted'
+    needs:
+      - 'base-qa'
+    strategy:
+      matrix:
+        include:
+          - php-version: '8.2'
+            typo3-version: '^12.4'
+          - php-version: '8.3'
+            typo3-version: '^12.4'
+          - php-version: '8.4'
+            typo3-version: '^12.4'
+          - php-version: '8.5'
+            typo3-version: '^12.4'
+          - php-version: '8.2'
+            typo3-version: '^13.4'
+          - php-version: '8.3'
+            typo3-version: '^13.4'
+          - php-version: '8.4'
+            typo3-version: '^13.4'
+          - php-version: '8.5'
+            typo3-version: '^13.4'
+    steps:
+      - uses: 'actions/checkout@v6'
+
+      - uses: 'actions/local/setup-php@v1'
+        with:
+          php-version: '${{ matrix.php-version }}'
+          php-extensions: 'sqlite3'
+
+      - name: 'PHP lint'
+        run: "composer project:lint:php"
+
+      - name: 'Install dependencies with expected TYPO3 version'
+        run: 'composer require --prefer-dist --no-progress "typo3/cms-core:${{ matrix.typo3-version }}"'
+
+      - name: 'Code Quality (by PHPStan)'
+        run: 'composer project:phpstan'
+
+      - name: 'PHPUnit Tests'
+        run: 'composer project:test:unit'

@@ -1,0 +1,38 @@
+includes:
+    - 'phpstan-baseline.neon'
+    - 'phar://phpstan.phar/conf/bleedingEdge.neon'
+parameters:
+    level: 'max'
+
+    reportIgnoresWithoutComments: true
+
+    paths:
+        - 'Classes'
+        - 'Tests'
+
+    cognitive_complexity:
+        class: 40
+        function: 9
+
+    disallowedFunctionCalls:
+        -
+            function:
+                - 'var_dump()'
+                - 'xdebug_break()'
+            message: 'Do not add debugging'
+        -
+            function: 'header()'
+            message: 'Use API instead'
+    disallowedStaticCalls:
+        -
+            method: 'TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump()'
+            message: 'Do not add debugging'
+    disallowedSuperglobals:
+        -
+            superglobal:
+                - '$_GET'
+                - '$_POST'
+                - '$_FILES'
+                - '$_SERVER'
+            message: 'Use API instead'
+

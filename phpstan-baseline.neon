@@ -1,0 +1,25 @@
+parameters:
+	ignoreErrors:
+		-
+			rawMessage: 'Method Codappix\Typo3PhpFlexforms\EventListener\BeforeFlexFormDataStructureParsedEventListener::enrichDataStructure() has parameter $dataStructure with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/EventListener/BeforeFlexFormDataStructureParsedEventListener.php
+
+		-
+			rawMessage: 'Method Codappix\Typo3PhpFlexforms\EventListener\BeforeFlexFormDataStructureParsedEventListener::enrichDataStructure() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/EventListener/BeforeFlexFormDataStructureParsedEventListener.php
+
+		-
+			rawMessage: 'Method Codappix\Typo3PhpFlexforms\EventListener\BeforeFlexFormDataStructureParsedEventListener::getDefaultStructureForIdentifier() has parameter $identifier with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/EventListener/BeforeFlexFormDataStructureParsedEventListener.php
+
+		-
+			rawMessage: 'Method Codappix\Typo3PhpFlexforms\EventListener\BeforeFlexFormDataStructureParsedEventListener::hasColumns() has parameter $dataStructure with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/EventListener/BeforeFlexFormDataStructureParsedEventListener.php
